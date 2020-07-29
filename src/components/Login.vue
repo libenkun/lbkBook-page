@@ -6,7 +6,18 @@
         <img src="../assets/logo.png">
       </div>
 <!--      表单区域-->
-
+      <el-form label-width="0px" class="lgin_form">
+        <el-form-item>
+          <el-input prefix-icon="iconfont icon-touxiang"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input prefix-icon="iconfont icon-mima"></el-input>
+        </el-form-item>
+        <el-form-item class="btn">
+          <el-button type="primary">登录</el-button>
+          <el-button type="info">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -48,6 +59,17 @@
         border-radius: 50%;
         background-color: #eee;
       }
+    }
+    .btn{
+      display: flex;
+      justify-content: flex-end;
+    }
+    .lgin_form{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 0 20px;
+      box-sizing: border-box;
     }
   }
 </style>
