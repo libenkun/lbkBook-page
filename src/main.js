@@ -7,6 +7,14 @@ import ElementUI from "element-ui"
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/globaLcss.less'
 import './assets/font/iconfont.css'
+import axios from 'axios'
+
+//配置请求根路径
+
+const instance = axios.create()
+instance.defaults.baseURL = 'http://127.0.0.1:8089/'
+Vue.prototype.$http = instance
+
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 

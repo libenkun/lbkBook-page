@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <router-view></router-view>
+    hom组件
   </div>
 </template>
 
