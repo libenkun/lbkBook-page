@@ -51,17 +51,14 @@
                 this.$refs.loginFormRef.resetFields();
             },
             login() {
-                var _this = this
                 this.$http
-                    .post('user/login',{
-                        // username:this.loginForm.username,
-                        // password:this.loginForm.password
-                        data:qs.stringify(this.loginForm)
-                    })
+                    .post('user/login',this.loginForm)
                     .then(response=>{
                         if (response.status===1) return this.$message.success("登录失败");
                         this.$message.success("登录成功");
-
+                        //保存token
+                        // window.sessionStorage.setItem("token",response.data.token);
+                        localStorage.setItem("user", JSON.stringify(response.data.data))
                         this.$router.push("/home");
                     })
             }

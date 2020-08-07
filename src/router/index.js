@@ -26,3 +26,18 @@ export default new Router({
     }
   ]
 })
+//
+// //挂载路由导航守卫
+// router.beforeEac((to,from,next)=>{
+//   //将要访问的路径
+//   //form从哪个路径跳转而来
+//   //next 是一个函数，表示放行
+//      //next()放行 next('/login')强制跳转
+//   if (to.path==='/login') return next();
+//   //获取token
+//   const tokenStr = window.sessionStorage.getItem('token')
+//   if (!tokenStr) return next('/login')
+//   next()
+// })
+
+
