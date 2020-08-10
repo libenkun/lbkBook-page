@@ -11,7 +11,7 @@
           <el-input v-model="loginForm.username" prefix-icon="iconfont icon-touxiang"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" v-model="loginForm.password" prefix-icon="iconfont icon-mima"></el-input>
+          <el-input type="password" v-model="loginForm.password" prefix-icon="iconfont icon-suo"></el-input>
         </el-form-item>
         <el-form-item class="btn">
           <el-button type="primary" @click="login">登录</el-button>

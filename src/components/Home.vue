@@ -9,28 +9,31 @@
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside :width="isCollapse ? '64px' : '200px'">
+        <div class="toggle-button" @click="toggleCollapse" >|||</div>
 <!--        侧边栏菜单区-->
         <el-menu
           background-color="#333744"
           text-color="#fff"
-          active-text-color="#ffd04b">
-          <el-submenu index="1">
+          active-text-color="#409EFF" unique-opened :collapse="isCollapse" :collapse-transition="false" router>
+          <el-submenu :index="item.id + ''" v-for="item in menulist" :key="item.id">
             <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>导航</span>
+              <i :class="iconsObje[item.id]"></i>
+              <span>{{item.menuName}}</span>
             </template>
-            <el-menu-item index="1-4-1">
+            <el-menu-item :index="subItem.id +''" v-for="subItem in item.menusChild" :key="subItem.id">
               <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>导航一</span>
+                <i class="el-icon-menu"></i>
+                <span>{{subItem.menuName}}</span>
               </template>
             </el-menu-item>
           </el-submenu>
 
         </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
   </div>
@@ -39,6 +42,19 @@
 
 <script>
 export default {
+    data(){
+        return{
+            menulist:[],
+            iconsObje:{
+                '1290188164052922369':'iconfont icon-icontouxiang',
+                '1292725922017406978':'iconfont icon-tijikongjian',
+                '1292726137977925633':'iconfont icon-shangpingouwudai2',
+                '1292726267183460353':'iconfont icon-danju-tianchong',
+                '1292726380085735426':'iconfont icon-baobiao'
+            },
+            isCollapse:false
+        }
+    },
     created(){
         this.getMenuList()
     },
@@ -51,8 +67,12 @@ export default {
         //获取菜单
         getMenuList(){
           let menus = JSON.parse(localStorage.getItem("user"))
-            this.data.menu = menus
+            this.menulist=menus.menus;
           console.info(menus)
+        },
+        //折叠和展开
+        toggleCollapse(){
+          this.isCollapse=!this.isCollapse
         }
     }
     }
@@ -84,8 +104,23 @@ export default {
   }
   .el-aside{
     background-color: #333744;
+    .el-menu{
+      border-right: none;
+    }
   }
   .el-main{
     background-color: #eaedf1;
+  }
+  .iconfont{
+    margin-right: 10px;
+  }
+  .toggle-button{
+    background-color: #4A5064;
+    font-size: 10px;
+    line-height:24px;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 0.2em;
+    cursor:pointer;
   }
 </style>

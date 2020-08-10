@@ -6,11 +6,39 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "1016754",
-      "name": "头像",
-      "font_class": "portrait",
-      "unicode": "e6da",
-      "unicode_decimal": 59098
+      "icon_id": "688096",
+      "name": "商品 购物袋2",
+      "font_class": "shangpingouwudai2",
+      "unicode": "e789",
+      "unicode_decimal": 59273
+    },
+    {
+      "icon_id": "868584",
+      "name": "icon-头像",
+      "font_class": "icontouxiang",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "1314416",
+      "name": "锁",
+      "font_class": "suo",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "1727367",
+      "name": "28体积、空间",
+      "font_class": "tijikongjian",
+      "unicode": "e89f",
+      "unicode_decimal": 59551
+    },
+    {
+      "icon_id": "2570077",
+      "name": "单据",
+      "font_class": "danju-tianchong",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
     },
     {
       "icon_id": "4889788",
@@ -20,11 +48,11 @@
       "unicode_decimal": 58912
     },
     {
-      "icon_id": "10605731",
-      "name": "密码",
-      "font_class": "mima",
-      "unicode": "e66c",
-      "unicode_decimal": 58988
+      "icon_id": "5191441",
+      "name": "报表",
+      "font_class": "baobiao",
+      "unicode": "e676",
+      "unicode_decimal": 58998
     }
   ]
 }

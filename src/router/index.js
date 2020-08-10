@@ -5,6 +5,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Home from "../components/Home";
 import Login from "../components/Login";
+import Welcome from "../components/Welcome";
+
 Vue.use(Router)
 Vue.use(ElementUI)
 export default new Router({
@@ -12,7 +14,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect:'/login'
+      redirect: '/login'
     },
     {
       path: '/login',
@@ -20,9 +22,13 @@ export default new Router({
       component: Login
     },
     {
-      path:'/home',
-      name:'home',
-      component:Home
+      path: '/home',
+      name: 'home',
+      component: Home,
+      redirect: '/Welcome',
+      children: [
+        {path: '/Welcome', component: Welcome}
+      ]
     }
   ]
 })
