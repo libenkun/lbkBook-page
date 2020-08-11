@@ -15,13 +15,13 @@
         <el-menu
           background-color="#333744"
           text-color="#fff"
-          active-text-color="#409EFF" unique-opened :collapse="isCollapse" :collapse-transition="false" router>
+          active-text-color="#409EFF" unique-opened :collapse="isCollapse" :collapse-transition="false" router :default-active="activePath">
           <el-submenu :index="item.id + ''" v-for="item in menulist" :key="item.id">
             <template slot="title">
               <i :class="iconsObje[item.id]"></i>
               <span>{{item.menuName}}</span>
             </template>
-            <el-menu-item :index="subItem.id +''" v-for="subItem in item.menusChild" :key="subItem.id">
+            <el-menu-item :index="'/'+subItem.path +''" v-for="subItem in item.menusChild" :key="subItem.id" @click="saveNavState('/'+subItem.path)">
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>{{subItem.menuName}}</span>
@@ -52,28 +52,35 @@ export default {
                 '1292726267183460353':'iconfont icon-danju-tianchong',
                 '1292726380085735426':'iconfont icon-baobiao'
             },
-            isCollapse:false
+            isCollapse:false,
+            //被激活的连接地址
+            activePath:''
         }
     },
     created(){
-        this.getMenuList()
+        this.getMenuList(),
+        this.activePath=window.sessionStorage.getItem('activePath')
     },
     name: "Home",
     methods:{
             logout(){
                 window.sessionStorage.clear();
-                this.$router.push("/login");
+                this.$router.push("/login").catch(err=>err);
             },
         //获取菜单
         getMenuList(){
           let menus = JSON.parse(localStorage.getItem("user"))
             this.menulist=menus.menus;
-          console.info(menus)
         },
         //折叠和展开
         toggleCollapse(){
           this.isCollapse=!this.isCollapse
-        }
+        },
+        //保存链接的激活状态
+        saveNavState(activePath){
+                window.sessionStorage.setItem('activePath',activePath)
+                this.activePath = activePath;
+            }
     }
     }
 </script>

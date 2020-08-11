@@ -6,6 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Home from "../components/Home";
 import Login from "../components/Login";
 import Welcome from "../components/Welcome";
+import Users from "../components/user/Users";
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -27,7 +28,8 @@ export default new Router({
       component: Home,
       redirect: '/Welcome',
       children: [
-        {path: '/Welcome', component: Welcome}
+        {path: '/Welcome', component: Welcome},
+        {path: '/user', component: Users}
       ]
     }
   ]
