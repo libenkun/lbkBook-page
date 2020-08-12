@@ -279,25 +279,33 @@
             // 根据id删除对应的用户
             async removerUserById(id) {
                 // 询问是否删除数据
-                const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+                    confirmResult = this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                })
-                //如确认删除，则返回字符串confirm
-                //如取消删除，则返回值为字符串cancel
-                if (confirmResult !== 'confirm') {
-                    return this.$message.info('已取消删除')
-                }
-
-                this.$http
-                    .delete('user/remover/', +id).then(res => {
+                }).then(()=>{
+                  this.$http
+                    .delete('user/remover/' +id).then(res => {
                     if (res.status !== 200) {
-                        return this.$message.error('删除是吧')
+                      return this.$message.error('删除失败')
                     }
                     this.$message.success('删除成功')
                     this.userList()
+                  })
+                }).catch(()=>{
+                  this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                  });
                 })
+              // console.log(confirmResult)
+              // //如确认删除，则返回字符串confirm
+              //   //如取消删除，则返回值为字符串cancel
+              //   if (confirmResult !== 'confirm') {
+              //       return this.$message.info('已取消删除')
+              //   }
+
+
             }
         }
     }
