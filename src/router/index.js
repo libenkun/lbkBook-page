@@ -7,6 +7,8 @@ import Home from "../components/Home";
 import Login from "../components/Login";
 import Welcome from "../components/Welcome";
 import Users from "../components/user/Users";
+import Rights from "../components/power/Rights";
+import Roles from "../components/power/Roles";
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -29,7 +31,9 @@ export default new Router({
       redirect: '/Welcome',
       children: [
         {path: '/Welcome', component: Welcome},
-        {path: '/user', component: Users}
+        {path: '/user', component: Users},
+        {path: '/right', component: Rights},
+        {path: '/roles', component: Roles}
       ]
     }
   ]

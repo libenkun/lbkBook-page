@@ -298,12 +298,6 @@
                     message: '已取消删除'
                   });
                 })
-              // console.log(confirmResult)
-              // //如确认删除，则返回字符串confirm
-              //   //如取消删除，则返回值为字符串cancel
-              //   if (confirmResult !== 'confirm') {
-              //       return this.$message.info('已取消删除')
-              //   }
 
 
             }
