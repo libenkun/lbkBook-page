@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h3>welcome</h3>
+      <h3>Did you know? that every day you meet people,who do not know how much they want to do.</h3>
     </div>
 </template>
 

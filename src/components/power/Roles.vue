@@ -16,7 +16,28 @@
       <!--        角色列表-->
       <el-table :data="rolelist" border stripe>
         <!--          展开列-->
-        <el-table-column type="expand"></el-table-column>
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <el-row :class="['bdbottom',i1 ===0 ? 'bdtop':'']" v-for="(item1,i1) in scope.row.permission":key="item1.id">
+<!--              一级权限-->
+              <el-col :span="5">
+                <el-tag>
+                  {{item1.name}}
+                </el-tag>
+                <i class="el-icon-caret-right"></i>
+              </el-col>
+              <el-col :span="19">
+                <el-row :class="[i2 ===0 ? '':'bdtop']" v-for="(item2,i2) in item1.permissionList" :key="item2.id">
+                  <el-col>
+                    <el-tag type="success">{{item2.name}}</el-tag>
+                    <i class="el-icon-caret-right"></i>
+                  </el-col>
+                  <el-col></el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+          </template>
+        </el-table-column>
         <el-table-column type="index"></el-table-column>
         <el-table-column label="角色名称" prop="roleName"></el-table-column>
         <el-table-column label="角色描述" prop="picture"></el-table-column>
@@ -194,5 +215,13 @@
 </script>
 
 <style scoped>
-
+  .el-tag{
+    margin: 7px;
+  }
+  .bdtop{
+    border-top: 1px solid #eee;
+  }
+  .bdbottom{
+    border-bottom: 1px solid #eee;
+  }
 </style>
