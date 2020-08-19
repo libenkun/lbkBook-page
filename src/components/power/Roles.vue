@@ -18,8 +18,9 @@
         <!--          展开列-->
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-row :class="['bdbottom',i1 ===0 ? 'bdtop':'']" v-for="(item1,i1) in scope.row.permission":key="item1.id">
-<!--              一级权限-->
+            <el-row :class="['bdbottom',i1 ===0 ? 'bdtop':'']" v-for="(item1,i1) in scope.row.permission"
+                    :key="item1.id">
+              <!--              一级权限-->
               <el-col :span="5">
                 <el-tag>
                   {{item1.name}}
@@ -29,7 +30,7 @@
               <el-col :span="19">
                 <el-row :class="[i2 ===0 ? '':'bdtop']" v-for="(item2,i2) in item1.permissionList" :key="item2.id">
                   <el-col>
-                    <el-tag type="success">{{item2.name}}</el-tag>
+                    <el-tag type="success" closable @close="removeRightById(scope.row,item2.id)">{{item2.name}}</el-tag>
                     <i class="el-icon-caret-right"></i>
                   </el-col>
                   <el-col></el-col>
@@ -49,8 +50,9 @@
             <el-tooltip class="item" effect="dark" content="删除" placement="top" :enterable="false">
               <el-button size="mini" type="danger" icon="el-icon-delete" @click="remover(scope.row.id)">删除</el-button>
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="分配角色" placement="top" :enterable="false">
-              <el-button size="mini" type="warning" icon="el-icon-setting">分配权限</el-button>
+            <el-tooltip class="item" effect="dark" content="分配权限" placement="top" :enterable="false">
+              <el-button size="mini" type="warning" icon="el-icon-setting" @click="showSetRightDialog(scope.row)">分配权限
+              </el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -93,6 +95,18 @@
     <el-button type="primary" @click="editRoleInfo">确 定</el-button>
   </span>
     </el-dialog>
+
+    <el-dialog
+      title="分配权限"
+      :visible.sync="setRightDialogVisible"
+      width="50%" @close="setRightDialogClosed">
+<!--      树形控件-->
+      <el-tree :data="rightslist" :props="treeProps" show-checkbox node-key="id" default-expand-all :default-checked-keys="defKeys" ref="treeRef"></el-tree>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="setRightDialogVisible = false">取 消</el-button>
+    <el-button type="primary"  @click="allotRights">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -101,6 +115,14 @@
         data() {
             return {
                 rolelist: [],
+                rightslist:[],
+                // 树形控件属性绑定对象
+                treeProps:{
+                    label:'name',
+                    children:'permissionList'
+                },
+                // 默认选中的节点id值
+                defKeys:[],
                 addRolesFom: {
                     roleName: '',
                     picture: ''
@@ -108,6 +130,8 @@
                 editsRole: {},
                 addDialogVisible: false,
                 editDialogVisible: false,
+                // 分配权限对话框
+                setRightDialogVisible: false,
                 //表单验证
                 addRoleRules: {
                     roleName: [
@@ -189,39 +213,96 @@
             },
             async remover(id) {
                 // 询问是否删除数据
-                 this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+                this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     this.$http
                         .delete('role/remover/' + id).then(res => {
-                            if (res.status !== 200) {
-                                return this.$message.error('删除失败')
-                            }
-                            this.$message.success("删除成功")
-                            this.getRoleList()
-                        })
+                        if (res.status !== 200) {
+                            return this.$message.error('删除失败')
+                        }
+                        this.$message.success("删除成功")
+                        this.getRoleList()
+                    })
                 }).catch(() => {
-                     this.$message({
-                         type: 'info',
-                         message: '已取消删除'
-                     });
-                 })
-            }
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                })
+            },
+            async removeRightById(role, id) {
+                //弹框
+                const confirmResult = await this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).catch(err => err)
 
+                if (confirmResult !== 'confirm') {
+                    return this.$message.info('取消删除')
+                }
+                this.$http.delete('permission/' + id)
+                    .then(res => {
+                        if (res.status !== 200) {
+                            return this.$message.error('删除是吧')
+                        }
+                        this.rolelist = res.data.data
+                    })
+
+            },
+            // 分配权限对话框
+            showSetRightDialog(role) {
+                //获取所有权限
+                this.$http
+                    .get('permission/tree')
+                    .then(res=>{
+                        if (res.status !==200){
+                            return this.$message.error('查询失败')
+                        }
+                      this.rightslist = res.data.data
+                    })
+                this.getLeafKeys(role,this.defKeys)
+                this.setRightDialogVisible = true
+            },
+            // 通过递归形式获取角色下的权限。并保存到defKeys数组中
+            getLeafKeys(node,arr){
+              // 如果当前node节点不包含children属性，则是二级节点
+              if (!node.permission){
+                  return arr.push(node.id)
+            }
+              node.permission.forEach(item=>{
+              this.getLeafKeys(item,arr)
+            })
+            },
+            // 监听分配权限对话框的关闭实践
+            setRightDialogClosed(){
+                this.defKeys = []
+            },
+            allotRights(){
+                const  keys = [
+                    ...this.$refs.treeRef.getHalfCheckedKeys()
+                ]
+
+                console.log(keys)
+            }
         }
+
     }
 </script>
 
 <style scoped>
-  .el-tag{
+  .el-tag {
     margin: 7px;
   }
-  .bdtop{
+
+  .bdtop {
     border-top: 1px solid #eee;
   }
-  .bdbottom{
+
+  .bdbottom {
     border-bottom: 1px solid #eee;
   }
 </style>
