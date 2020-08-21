@@ -6,7 +6,7 @@
         <img src="../assets/img.jpg" alt="" width="50px" height="50px">
         <span>电商后台管理系统</span>
       </div>
-      <el-button type="info" @click="logout">退出</el-button>
+      <el-button type="info" @click="logout" height="10px">退出</el-button>
     </el-header>
     <el-container>
       <el-aside :width="isCollapse ? '64px' : '200px'">
