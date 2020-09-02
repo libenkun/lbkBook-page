@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/globaLcss.less'
 import './assets/font/iconfont.css'
 import axios from 'axios'
+import TreeTable from 'vue-table-with-tree-grid'
 
 //配置请求根路径
 
@@ -17,6 +18,7 @@ Vue.prototype.$http = instance
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false
+Vue.component('tree-table',TreeTable)
 
 /* eslint-disable no-new */
 new Vue({
