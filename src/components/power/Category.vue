@@ -12,7 +12,7 @@
         </el-col>
       </el-row>
       <!--        表格-->
-      <tree-table :data="cateList" :columns="columns"
+      <tree-table class="treeTable" :data="cateList" :columns="columns"
                   show-index index-text="#"
                   :expand-type="false"
                   :selection-type="false" border :show-row-hover="false">
@@ -22,7 +22,16 @@
           <i class="el-icon-error" style="color: red;" v-else></i>
         </template>
       </tree-table>
-      <!--        分类-->
+      <!--        分页-->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="querInfo.current"
+        :page-sizes="[3, 5, 10, 15]"
+        :page-size="querInfo.size"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -68,11 +77,23 @@
                         this.cateList = res.data.data.records
                         this.total = parseInt(res.data.data.total)
                     })
-            }
+            },
+            //监听size改变
+            handleSizeChange(newSize){
+                this.querInfo.size = newSize
+                this.getCateList()
+            },
+            //
+            handleCurrentChange(newCurrent){
+              this.querInfo.current = newCurrent
+              this.getCateList()
+            },
         }
     }
 </script>
 
 <style scoped lang="less">
-
+.treeTable{
+  margin-top: 15px;
+}
 </style>
