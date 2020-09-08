@@ -37,7 +37,7 @@
     <el-dialog
       title="添加分类"
       :visible.sync="addCateDialoVisible"
-      width="50%">
+      width="50%" @close="addDialogClosed">
       <el-form :model="addCateForm" :rules="addCateFormRules" ref="addCateFormRef" label-width="100px">
         <el-form-item label="活动名称：" prop="name">
           <el-input v-model="addCateForm.name"></el-input>
@@ -164,21 +164,31 @@
                     //父级分类的id
                     this.addCateForm.pid = this.selectKeys[this.selectKeys.length - 1]
                     return
-                }else {
+                } else {
                     this.addCateForm.pid = 0
                 }
             },
-            addCate(){
-                this.$http
-                    .post('category/add',this.addCateForm)
-                    .then(res=>{
-                        if (res.status !== 200){
-                            return this.$message.error("分类添加失败")
-                        }
-                        this.getCateList();
-                        this.addCateDialoVisible = false
-                        return this.$message.success("分类添加成功！")
-                    })
+            addCate() {
+                this.$refs.addCateFormRef.validate(valid => {
+                    if (!valid) return
+
+                    this.$http
+                        .post('category/add', this.addCateForm)
+                        .then(res => {
+                            if (res.status !== 200) {
+                                return this.$message.error("分类添加失败")
+                            }
+                            this.getCateList();
+                            this.addCateDialoVisible = false
+                            return this.$message.success("分类添加成功！")
+                        })
+                })
+            },
+            //监听添加用户对话框的关闭事件
+            addDialogClosed() {
+                this.$refs.addCateFormRef.resetFields()
+                this.selectKeys = []
+                this.addCateForm.pid = 0
             }
         }
     }

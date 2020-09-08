@@ -10,6 +10,7 @@ import Users from "../components/user/Users";
 import Rights from "../components/power/Rights";
 import Roles from "../components/power/Roles";
 import Category from "../components/power/Category";
+import Params from "../components/power/Params";
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -35,7 +36,8 @@ export default new Router({
         {path: '/user', component: Users},
         {path: '/right', component: Rights},
         {path: '/roles', component: Roles},
-        {path: '/category', component: Category}
+        {path: '/category', component: Category},
+        {path: '/params',component:Params}
       ]
     }
   ]
